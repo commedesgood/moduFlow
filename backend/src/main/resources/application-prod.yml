@@ -1,0 +1,40 @@
+spring:
+  config:
+    # 운영 배포에서는 소셜 로그인 시작 URL(/oauth2/authorization/{provider})을
+    # Spring Security OAuth2 필터가 처리해야 하므로 OAuth client 설정을 함께 로드합니다.
+    import: optional:classpath:application-oauth.yml
+
+  datasource:
+    # AWS(RDS)에서는 보통 아래 환경변수로 주입해서 사용합니다.
+    # 예) DB_HOST=mydb.xxxxxx.ap-northeast-2.rds.amazonaws.com
+    # 예) DB_NAME=fitflow
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT:3306}/${DB_NAME}?useSSL=${DB_SSL:false}&serverTimezone=${DB_TIMEZONE:Asia/Seoul}&characterEncoding=UTF-8&useUnicode=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX:10}
+      minimum-idle: ${DB_POOL_MIN:2}
+      connection-timeout: ${DB_CONN_TIMEOUT_MS:30000}
+      validation-timeout: ${DB_VALID_TIMEOUT_MS:5000}
+
+  jpa:
+    hibernate:
+      # 운영에서는 validate 권장(스키마는 마이그레이션으로 관리)
+      # 지금은 초기 배포/개발 편의를 위해 update 기본값 유지
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION:1h}
+
+app:
+  frontend:
+    base-url: ${FRONTEND_BASE_URL}
+    oauth-success-path: ${FRONTEND_OAUTH_SUCCESS_PATH:/oauth/callback}
+    oauth-failure-path: ${FRONTEND_OAUTH_FAILURE_PATH:/oauth/callback}

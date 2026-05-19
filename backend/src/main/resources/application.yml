@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/fitflow
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+security:
+  jwt:
+    secret: "change-me-to-a-long-random-secret-at-least-32-bytes"
+    expiration: 1h
+
+app:
+  server:
+    base-url: "http://3.39.194.42:8080"
+  frontend:
+    base-url: "http://localhost:5173"
+    oauth-success-path: "/oauth/callback"
+    oauth-failure-path: "/oauth/callback"
+  cors:
+    allowed-origin-patterns:
+      - "http://localhost:*"
+      - "http://127.0.0.1:*"
+      - "https://localhost:*"
+      - "https://127.0.0.1:*"
+      - "https://*.figma.site"
+      # 배포된 백엔드/프론트 환경에서 필요 시 추가
+      - "http://3.39.194.42:*"
