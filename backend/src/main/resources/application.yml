@@ -1,6 +1,9 @@
 spring:
+  application:
+    name: moduflow-backend
+
   datasource:
-    url: jdbc:mysql://localhost:3306/fitflow
+    url: jdbc:mysql://localhost:3306/moduflow?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useUnicode=true
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,17 +20,25 @@ security:
 
 app:
   server:
-    base-url: "http://3.39.194.42:8080"
+    base-url: "${SERVER_BASE_URL:https://3-39-194-42.sslip.io}"
   frontend:
-    base-url: "http://localhost:5173"
-    oauth-success-path: "/oauth/callback"
-    oauth-failure-path: "/oauth/callback"
+    base-url: "${FRONTEND_BASE_URL:https://modu-flow-frontend.vercel.app}"
+    oauth-success-path: "${FRONTEND_OAUTH_SUCCESS_PATH:/oauth/callback}"
+    oauth-failure-path: "${FRONTEND_OAUTH_FAILURE_PATH:/oauth/callback}"
   cors:
     allowed-origin-patterns:
       - "http://localhost:*"
       - "http://127.0.0.1:*"
       - "https://localhost:*"
       - "https://127.0.0.1:*"
+      - "https://modu-flow-frontend.vercel.app"
+      - "https://*.vercel.app"
       - "https://*.figma.site"
       # 배포된 백엔드/프론트 환경에서 필요 시 추가
       - "http://3.39.194.42:*"
+      - "https://3-39-194-42.sslip.io"
+  admin-test:
+    enabled: ${ADMIN_TEST_ENABLED:false}
+    email: ${ADMIN_TEST_EMAIL:}
+    password: ${ADMIN_TEST_PASSWORD:}
+    name: ${ADMIN_TEST_NAME:CMS Admin}

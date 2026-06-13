@@ -7,7 +7,7 @@ spring:
   datasource:
     # AWS(RDS)에서는 보통 아래 환경변수로 주입해서 사용합니다.
     # 예) DB_HOST=mydb.xxxxxx.ap-northeast-2.rds.amazonaws.com
-    # 예) DB_NAME=fitflow
+    # 예) DB_NAME=moduflow
     url: jdbc:mysql://${DB_HOST}:${DB_PORT:3306}/${DB_NAME}?useSSL=${DB_SSL:false}&serverTimezone=${DB_TIMEZONE:Asia/Seoul}&characterEncoding=UTF-8&useUnicode=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -34,7 +34,12 @@ security:
     expiration: ${JWT_EXPIRATION:1h}
 
 app:
+  server:
+    base-url: ${SERVER_BASE_URL:https://3-39-194-42.sslip.io}
   frontend:
-    base-url: ${FRONTEND_BASE_URL}
+    base-url: ${FRONTEND_BASE_URL:https://modu-flow-frontend.vercel.app}
     oauth-success-path: ${FRONTEND_OAUTH_SUCCESS_PATH:/oauth/callback}
     oauth-failure-path: ${FRONTEND_OAUTH_FAILURE_PATH:/oauth/callback}
+
+server:
+  forward-headers-strategy: ${SERVER_FORWARD_HEADERS_STRATEGY:framework}
